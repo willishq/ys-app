@@ -1,0 +1,7 @@
+{
+    "extends": ["@nuxtjs/eslint-config-typescript"],
+    "rules": {
+        "vue/no-setup-props-destructure": "off"
+    }
+
+}
