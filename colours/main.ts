@@ -7,6 +7,10 @@ export const main = (theme) => {
           borderLight: 'border-primary-50',
           borderDark: 'border-primary-900',
 
+          ring: 'ring-primary-500',
+          ringLight: 'ring-primary-50',
+          ringDark: 'ring-primary-900',
+
           divide: 'divide-primary-500',
 
           text: 'text-primary-500',
@@ -36,6 +40,10 @@ export const main = (theme) => {
           borderLight: 'border-secondary-50',
           borderDark: 'border-secondary-900',
 
+          ring: 'ring-secondary-500',
+          ringLight: 'ring-secondary-50',
+          ringDark: 'ring-secondary-900',
+
           text: 'text-secondary-500',
           textLight: 'text-secondary-50',
           textDark: 'text-secondary-900',
@@ -60,29 +68,33 @@ export const main = (theme) => {
         }
       case 'accent':
         return {
-          border: 'border-secondary-500',
-          borderLight: 'border-secondary-50',
-          borderDark: 'border-secondary-900',
+          border: 'border-accent-500',
+          borderLight: 'border-accent-50',
+          borderDark: 'border-accent-900',
 
-          text: 'text-secondary-500',
-          textLight: 'text-secondary-50',
-          textDark: 'text-secondary-900',
+          ring: 'ring-primary-500',
+          ringLight: 'ring-primary-50',
+          ringDark: 'ring-primary-900',
 
-          bg: 'bg-secondary-500',
-          bgLight: 'bg-secondary-50',
-          bgDark: 'bg-secondary-900',
+          text: 'text-accent-500',
+          textLight: 'text-accent-50',
+          textDark: 'text-accent-900',
 
-          borderHover: 'hover:border-secondary-500',
-          borderLightHover: 'hover:border-secondary-50',
-          borderDarkHover: 'hover:border-secondary-900',
+          bg: 'bg-accent-500',
+          bgLight: 'bg-accent-50',
+          bgDark: 'bg-accent-900',
 
-          textHover: 'hover:text-secondary-500',
-          textLightHover: 'hover:text-secondary-50',
-          textDarkHover: 'hover:text-secondary-900',
+          borderHover: 'hover:border-accent-500',
+          borderLightHover: 'hover:border-accent-50',
+          borderDarkHover: 'hover:border-accent-900',
 
-          bgHover: 'hover:bg-secondary-500',
-          bgLightHover: 'hover:bg-secondary-50',
-          bgDarkHover: 'hover:bg-secondary-900'
+          textHover: 'hover:text-accent-500',
+          textLightHover: 'hover:text-accent-50',
+          textDarkHover: 'hover:text-accent-900',
+
+          bgHover: 'hover:bg-accent-500',
+          bgLightHover: 'hover:bg-accent-50',
+          bgDarkHover: 'hover:bg-accent-900'
         }
     }
   })()

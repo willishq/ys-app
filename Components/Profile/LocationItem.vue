@@ -7,6 +7,7 @@ interface Props {
     country: string;
     postcode?: string;
     theme: ColourTheme;
+    active?: boolean;
 }
 
 defineProps<Props>()
@@ -14,7 +15,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="bg-white rounded p-4 gap-3 flex flex-col justify-between">
+  <div class="bg-white rounded p-4 gap-3 flex flex-col justify-between ring" :class="[active ? theme.ring : 'ring-white']">
     <header>
       <h4 :class="['text-xl font-medium yp-4', theme.text]">
         {{ name }}

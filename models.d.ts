@@ -38,6 +38,7 @@ interface ColourTheme {
     bgDark: string;
     text: string;
     border: string;
+    ring: string;
     divide: string;
     button: string;
     buttonReverse: string;
