@@ -26,6 +26,7 @@ const namedRoute = ({ slug, provider }) => {
     return {
       name: 'category-providers-slug',
       params: {
+        category,
         slug: provider.slug
       },
       hash: `#${slug}`
@@ -36,6 +37,7 @@ const namedRoute = ({ slug, provider }) => {
     return {
       name: 'category-providers-slug',
       params: {
+        category,
         slug
       }
     }
@@ -43,14 +45,13 @@ const namedRoute = ({ slug, provider }) => {
   return {
     name: 'directory-category-type',
     params: {
-      type: page
-
+      type: page,
+      category
     }
   }
 }
 
 </script>
-
 <template>
   <div
     v-if="loaded"

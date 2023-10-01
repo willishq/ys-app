@@ -11,7 +11,7 @@ const geolocationStore = useGeolocationStore()
 const categoryStore = useCategories()
 
 const category = computed<PrimaryCategory>(() => categoryStore.primaryCategories.find(item => item.slug === route.params.category))
-const locality = computed<Locality | undefined>(() => geolocationStore.localities.find(l => l.slug === route.params.locality))
+const locality = computed<Locality | null>(() => geolocationStore.find(route.params.locality))
 
 const panels = {
   guides: 'Guides',

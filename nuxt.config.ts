@@ -7,7 +7,6 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
     'nuxt-mapbox'
-
   ],
   mapbox: {
     accessToken: 'pk.eyJ1Ijoid2lsbGlzaHEiLCJhIjoiY2xtbmg1YzhzMHd6YjJrbDhkd2QxZDBjayJ9.Jz6IA_8CupTGYlQ_4B1ssw'

@@ -11,7 +11,13 @@ export const useGeolocationStore: StoreDefinition<
     StoreState
 > = defineStore('geolocation', () => {
   const localities = shallowRef<Locality[]>([])
+  const currentLocalityCookie = useCookie('locality')
 
+  const find = (slug: string): Locality | null => {
+    return localities.value.find(locality => locality.slug === slug) ?? null
+  }
+
+  const current = shallowRef<Locality | null>(null)
   const sorter = (a: Locality, b: Locality): number => {
     if (a.name === b.name) { return 0 }
     return a.name < b.name ? -1 : 1
@@ -26,7 +32,13 @@ export const useGeolocationStore: StoreDefinition<
 
   const fill = (data: Locality[]) => {
     localities.value = data.sort()
+    current.value = currentLocalityCookie.value ? find(currentLocalityCookie.value as string) : null
   }
 
-  return { localities, primary, fetch, fill }
+  const setCurrent = (slug: string) => {
+    current.value = find(slug)
+    currentLocalityCookie.value = slug
+  }
+
+  return { localities, primary, current, setCurrent, fetch, fill, find }
 })

@@ -6,6 +6,7 @@ import CategoryPanel from '~/Components/Profile/CategoryPanel.vue'
 import LocationPanel from '~/Components/Profile/LocationPanel.vue'
 import ServicePanel from '~/Components/Profile/ServicePanel.vue'
 import HeaderPanel from '~/Components/Profile/HeaderPanel.vue'
+import ArticlePanel from '~/Components/Profile/ArticlePanel.vue'
 
 const route = useRoute()
 
@@ -19,7 +20,8 @@ const theme = categoryThemes('default')
   <div v-if="organisation" class="flex w-full flex-col justify-end bg-cover gap-12">
     <HeaderPanel :organisation="organisation" :theme="theme" />
     <CategoryPanel :category-ids="organisation.categories" />
-    <ServicePanel :services="organisation.services" :theme="theme" />
-    <LocationPanel :places="organisation.places" :theme="theme" />
+    <ArticlePanel v-if="organisation.articles.length" :articles="organisation.articles" :theme="theme" />
+    <ServicePanel v-if="organisation.services.length" :services="organisation.services" :theme="theme" />
+    <LocationPanel v-if="organisation.places.length" :places="organisation.places" :theme="theme" />
   </div>
 </template>

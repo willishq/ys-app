@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { useRoute, useRouter } from '#imports'
+import { useGeolocationStore, useRoute, useRouter } from '#imports'
 import CategoryFilter from '~/Components/CategoryFilter.vue'
 import PrimaryCategorySelector from '~/Components/PrimaryCategorySelector.vue'
 import LocalitySelector from '~/Components/LocalitySelector.vue'
@@ -25,13 +25,12 @@ interface DirectoryRouteParams {
 const route = useRoute()
 const router = useRouter()
 const categoryStore = useCategories()
-
+const localityStore = useGeolocationStore()
 const category = ref<PrimaryCategory>(categoryStore.primaryCategories.find(item => item.slug === route.params.category))
-const locality = ref(route.params.locality as string | undefined)
 
 const filter = ref<string>(route.query.f as string | '')
 
-const refresh = ({ c = null, f = null, l = null }) => {
+const refresh = ({ c = null, f = null } = {}) => {
   const routeTo: DirectoryRouteParams = {
     name: 'directory-category',
     params: {
@@ -43,10 +42,9 @@ const refresh = ({ c = null, f = null, l = null }) => {
   if (!c && (f || filter.value)) {
     routeTo.query.f = f || filter.value!
   }
-
-  if (l || locality.value) {
+  if (localityStore.current) {
     routeTo.name = 'directory-category-in-locality'
-    routeTo.params.locality = l || locality.value!
+    routeTo.params.locality = localityStore.current.slug
   }
 
   if (pageType === 'listing') {
@@ -79,8 +77,9 @@ watch(() => categoryStore.primaryCategories, () => {
         @update:category="refresh({c: ($event || category!).slug})"
       />
       <LocalitySelector
-        v-model:locality="locality"
-        @update:locality="refresh({l: $event || locality!})"
+        label="Pick location"
+        prefix="in"
+        @update:locality="refresh()"
       />
     </header>
     <div class="col-span-9 gap-4 flex flex-col">

@@ -1,3 +1,5 @@
+import {LngLatLike} from "mapbox-gl";
+
 interface Category {
     id: string;
     name: string;
@@ -11,7 +13,7 @@ interface PrimaryCategory extends Category {
     colour: ColourTheme;
 }
 
-type Point = {
+interface PlacePoint extends LngLatLike {
     lat: number;
     lng: number;
 };
@@ -19,7 +21,7 @@ type Point = {
 interface Locality {
     name: string;
     slug: string;
-    point: Point;
+    point: PlacePoint;
     stateName?: string;
     population: number;
 }
@@ -46,15 +48,30 @@ interface ColourTheme {
     hoverLightBg: string;
     hoverText: string;
 }
-
+type SocialLinkType = 'facebook' | 'twitter' | 'instagram' | 'linkedin' | 'youtube' | 'whatsapp';
+interface SocialLink {
+    prefix: string;
+    icon: {
+        viewBox: string;
+        path: Array<string>;
+    }
+}
+interface OrganisationLink {
+    type: SocialLinkType;
+    url: string;
+    value: string;
+}
 interface Provider {
     title: string;
     description: string;
     slug: string;
-    image: string;
+    avatar: string;
+    links: Array<OrganisationLink>
+    cover: string;
     categories: Array<string>;
     places: Array<Place>;
     services: Array<Service>;
+    posts: Array<Post>;
 }
 
 interface Service {
@@ -68,6 +85,6 @@ interface Place {
     locality: string,
     postcode: string,
     address: string[],
-    point?: Point,
+    point?: PlacePoint,
     country: string,
 }

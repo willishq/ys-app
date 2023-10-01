@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/20/solid'
+import { useGeolocationStore } from '~/stores/geolocation'
 
 interface Props {
     label?: string;
-    locality?: string;
     error?: string;
+    prefix?: string;
 }
 
 interface Emits {
@@ -14,11 +15,9 @@ interface Emits {
 
 const store = useGeolocationStore()
 
-const { locality, label } = defineProps<Props>()
+const { label, prefix } = defineProps<Props>()
 
 const combobox = ref<HTMLElement | null>()
-
-const selected = computed<Locality | undefined>(() => store.localities.find(l => l.slug === locality))
 
 const emit = defineEmits<Emits>()
 
@@ -38,10 +37,16 @@ const options = computed(() => query.value ? filter(store.localities) : store.pr
 
 const showInput = ref<boolean>(false)
 const updateValue = (value: string) => {
-  emit('update:locality', value)
-
-  showInput.value = false
-  query.value = ''
+  if (value) {
+    store.setCurrent(value)
+  } else {
+    store.setCurrent(null)
+  }
+  setTimeout(() => {
+    emit('update:locality', value)
+    showInput.value = false
+    query.value = ''
+  }, 100)
 }
 
 const handleShowInput = () => {
@@ -67,7 +72,7 @@ watch(combobox, () => {
 </script>
 <template>
   <Combobox
-    :model-value="locality || ''"
+    :model-value="store.current?.slug || ''"
     as="div"
     class="flex flex-row items-center mr-6"
     @update:model-value="updateValue"
@@ -77,19 +82,19 @@ watch(combobox, () => {
       class="text-neutral-500 cursor-pointer flex items-center gap-2"
     >
       <span
-        v-if="selected"
+        v-if="store.current"
         class="hover:underline"
         @click="handleShowInput"
       >
-        in {{ selected.name }}
+        {{ prefix }} {{ store.current.name }}
         <span
-          v-if="selected.stateName && selected.stateName !== locality.name"
+          v-if="store.current.stateName && store.current.stateName !== store.current.name"
           class="text-xs"
-          v-text="`(${selected.stateName})`"
+          v-text="`(${store.current.stateName})`"
         />
       </span>
       <XMarkIcon
-        v-if="selected"
+        v-if="store.current"
         class="w-4 h-4 inline-block hover:scale-125"
         @click="updateValue('')"
       />
