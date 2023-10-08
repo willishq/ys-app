@@ -17,6 +17,7 @@
         "@nuxtjs/eslint-config-typescript": "^12.0.0",
         "@nuxtjs/eslint-module": "^4.1.0",
         "@nuxtjs/tailwindcss": "^6.7.2",
+        "@nuxt/eslint-config": "^0.1.1",
         "@pinia/nuxt": "^0.4.11",
         "@tailwindcss/forms": "^0.5.3",
         "@tailwindcss/typography": "^0.5.9",
@@ -25,12 +26,10 @@
         "eslint": "^8.45.0",
         "nuxt": "^3.5.3",
         "nuxt-mapbox": "^1.4.4",
-        "pinia": "^2.1.4"
+        "pinia": "^2.1.4",
+        "trix": "^2.0.7"
     },
     "overrides": {
         "vue": "latest"
-    },
-    "dependencies": {
-        "@nuxt/eslint-config": "^0.1.1"
     }
 }

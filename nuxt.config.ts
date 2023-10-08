@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     'nuxt-mapbox'
   ],
   mapbox: {
-    accessToken: 'pk.eyJ1Ijoid2lsbGlzaHEiLCJhIjoiY2xtbmg1YzhzMHd6YjJrbDhkd2QxZDBjayJ9.Jz6IA_8CupTGYlQ_4B1ssw'
+    accessToken: process.env.MAPBOX_TOKEN || ''
   },
   hooks: {
     'pages:extend' (pages) {
@@ -24,13 +24,19 @@ export default defineNuxtConfig({
         path: '/directory/:category-in-:locality/:type',
         file: '~/pages/directory/[category]/[type].vue'
       })
+
+      pages.push({
+        name: 'post-type-provider-slug',
+        path: '/:type(articles|features|guides)/:provider/:slug',
+        file: '~/pages/posts/post.vue'
+      })
     }
   },
 
   runtimeConfig: {
     public: {
-      backendUrl: 'http://localhost/api',
-      frontendUrl: 'http://localhost:3000'
+      backendUrl: process.env.API_URL || '',
+      frontendUrl: process.env.APP_URL || ''
     }
   },
 
@@ -43,6 +49,6 @@ export default defineNuxtConfig({
   },
 
   devtools: {
-    enabled: true
+    enabled: process.env.APP_ENV === 'local'
   }
 })

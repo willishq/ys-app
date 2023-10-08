@@ -88,3 +88,21 @@ interface Place {
     point?: PlacePoint,
     country: string,
 }
+
+interface Post {
+    id: string;
+    title: string;
+    slug: string;
+    description: string;
+    content: string;
+    image?: string;
+    categories: string[];
+    provider: Provider;
+
+}
+
+enum PostType {
+    Article = 'articles',
+    Feature = 'features',
+    Guide = 'guides',
+}

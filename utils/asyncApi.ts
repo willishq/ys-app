@@ -19,3 +19,9 @@ export const getOrganisation = async (slug: string) => (
     ).data
   )
 ).data
+
+export const getOrganisationPost = async (organisation: string, slug: string) => (
+  await useAsyncData<Post>(getKey('provider.post', [organisation, slug]), async () => (
+    await $apiGet<{data: Post}>(`providers/${organisation}/posts/${slug}`)
+  ).data)
+).data
