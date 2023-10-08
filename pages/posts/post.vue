@@ -1,22 +1,21 @@
 <script setup lang="ts">
 
-import { getOrganisationPost } from '~/utils/asyncApi'
-import { useCategories } from '~/stores/categories'
+import { getPostCategoriesRelatedPosts, getProviderPost, getProviderRelatedPosts } from '~/utils/asyncApi'
 import CategoryPanel from '~/Components/Profile/CategoryPanel.vue'
+import ReleatedPost from '~/Components/Post/ReleatedPost.vue'
 
 const { slug, provider }: {slug: string, provider: string} = useRoute().params
-const post = await getOrganisationPost(provider, slug)
+const post = await getProviderPost(provider, slug)
 if (!post.value) {
   useRouter().push('/404')
 }
 
-const categories = ref(useCategories().categoryTree(post.value.categories))
+const providerRelatedPosts = await getProviderRelatedPosts(post.value.provider.id, post.value.id)
+const categoryRelatedPosts = await getPostCategoriesRelatedPosts(post.value.id)
 
 </script>
-<!--
-length LR: 24.5
-circ LR: 24.7
- -->
+
+<!--eslint-disable vue/no-v-html  -->
 <template>
   <div class="grid grid-cols-12 gap-3">
     <article class="col-span-8 bg-white border rounded-md shadow-md border-neutral-200 p-4">
@@ -29,23 +28,53 @@ circ LR: 24.7
         <h2 class="text-lg  text-neutral-100">
           {{ post.description }}
         </h2>
-        <div class="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-neutral-300">
+        <div class="flex mt-4 flex-wrap items-center overflow-hidden text-sm leading-6 text-neutral-300">
+          <span class="mr-1.5">Published on</span>
           <time :datetime="post.datetime" class="mr-8">{{ post.date }}</time>
-          <div class="-ml-4 flex items-center gap-x-4">
-            <svg viewBox="0 0 2 2" class="-ml-0.5 h-0.5 w-0.5 flex-none fill-white/50">
-              <circle cx="1" cy="1" r="1" />
-            </svg>
-            <div class="flex gap-x-2.5">
-              <img v-if="post.provider.avatar" :src="post.provider.avatar" alt="" class="h-6 w-6 flex-none rounded-full bg-white/10">
-              {{ post.provider.title }}
-            </div>
-          </div>
         </div>
       </header>
       <div class="trix-content text-neutral-900" v-html="post.content" />
     </article>
-    <div class="col-span-4 bg-white border rounded-md shadow-md border-neutral-200 p-4">
-      <CategoryPanel :category-ids="post.categories" />
+    <div class="col-span-4 flex flex-col gap-6">
+      <div class="bg-white border rounded-md shadow-md border-neutral-200 p-4 flex flex-col gap-3">
+        <div class="leading-6 text-neutral-700 flex flex-col gap-2">
+          <span class="text-neutral-500">{{ ucFirst(post.type) }} by</span>
+          <div class="flex gap-x-2.5">
+            <img v-if="post.provider.avatar" :src="post.provider.avatar" alt="" class="h-6 w-6 flex-none rounded-full">
+            <h2 class="text-3xl font-semibold">
+              {{ post.provider.title }}
+            </h2>
+          </div>
+        </div>
+        <hr class="h-px -mx-4 bg-neutral-300 border-0">
+        <div v-if="providerRelatedPosts?.length > 0">
+          <h3 class="leading-6 mb-3 text-neutral-400">
+            More from {{ post.provider.title }}
+          </h3>
+          <hr class="h-px -mx-4 bg-neutral-300 border-0">
+          <ReleatedPost
+            v-for="providerPost in providerRelatedPosts"
+            :key="providerPost.id"
+            :post="providerPost"
+          />
+        </div>
+      </div>
+
+      <div class="bg-white border rounded-md shadow-md border-neutral-200 p-4 flex flex-col gap-3">
+        <CategoryPanel :category-ids="post.categories" />
+        <hr class="h-px -mx-4 bg-neutral-300 border-0">
+        <div v-if="categoryRelatedPosts?.length > 0">
+          <h3 class="leading-6 mb-3 text-neutral-400">
+            Related content
+          </h3>
+          <hr class="h-px -mx-4 bg-neutral-300 border-0">
+          <ReleatedPost
+            v-for="categoryPost in categoryRelatedPosts"
+            :key="categoryPost.id"
+            :post="categoryPost"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
