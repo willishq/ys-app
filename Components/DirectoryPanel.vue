@@ -44,7 +44,7 @@ const namedRoute = ({ slug, provider }) => {
   }
   if (provider && ['guides', 'articles'].includes(page)) {
     return {
-      name: 'post-type-provider-slug',
+      name: 'type-provider-slug',
       params: {
         type: page,
         provider: provider.slug,

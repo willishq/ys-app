@@ -28,17 +28,16 @@ export async function $apiFetch<T, R extends ResponseType = 'json'> (
   const { backendUrl, frontendUrl } = useRuntimeConfig().public
   const router = useRouter()
   let token = useCookie(CSRF_COOKIE).value
-
-  if (process.client && ['post', 'delete', 'put', 'patch'].includes(options?.method?.toLowerCase() ?? '')) {
+  if (process.client && ['post', 'delete', 'put', 'patch'].includes(options?.method?.toLowerCase() as string)) {
     await initCSRF(backendUrl)
     token = getCookie(CSRF_COOKIE)
   }
 
   try {
-    return (await $fetch<T, R>(path, {
+    return (await $fetch<{data: T}, R>(path, {
       baseURL: backendUrl,
       ...options,
-      ...getHeaders(options, token, frontendUrl),
+      headers: getHeaders(options, token, frontendUrl),
       credentials: 'include'
     }))
   } catch (error) {
@@ -48,31 +47,27 @@ export async function $apiFetch<T, R extends ResponseType = 'json'> (
 
     const status = error.response?.status ?? -1
 
-    if (redirectIfNotAuthenticated && [401, 419].includes(status)) {
-      await router.push('/login')
-    }
-
-    if (redirectIfNotVerified && [409].includes(status)) {
-      await router.push('/verify-email')
-    }
-
-    if (status >= 500) {
+    if ([401, 419].includes(status)) {
+      redirectIfNotAuthenticated && await router.push({ name: 'providers_sign-in', query: { redirect: router.currentRoute.value.fullPath } })
+    } else if ([409].includes(status)) {
+      redirectIfNotVerified && await router.push('/verify-email')
+    } else if (status >= 500) {
       // eslint-disable-next-line no-console
       console.error('[API Server Error]', error.data?.message, error.data)
-    }
-
-    if (status >= 400) {
+    } else if (status >= 400) {
       // eslint-disable-next-line no-console
       console.error('[API User Error]', error.data?.message, error.data)
+    } else {
+      throw error
     }
-
-    throw error
   }
 }
 
-const initCSRF = (baseURL:string, credentials: RequestCredentials = 'include') => $fetch('/sanctum/csrf-cookie', {
-  baseURL, credentials
-})
+const initCSRF = async (baseURL: string, credentials: RequestCredentials = 'include') => {
+  await $fetch('/sanctum/csrf-cookie', {
+    baseURL, credentials
+  })
+}
 
 const cookieRegex = (n: string): RegExp => new RegExp(`(^|;\\s*)(${n})=([^;]*)`)
 const getCookie = (name: string): string | null => {

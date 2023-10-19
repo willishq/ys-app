@@ -20,7 +20,7 @@ const theme = categoryThemes('default')
   <div v-if="provider" class="flex w-full flex-col justify-end bg-cover gap-12">
     <HeaderPanel :provider="provider" :theme="theme" />
     <CategoryPanel :category-ids="provider.categories" />
-    <ArticlePanel v-if="provider.articles.length" :articles="provider.articles" :theme="theme" />
+    <ArticlePanel v-if="provider.articles.length" :articles="provider.articles" :provider="provider" :theme="theme" />
     <ServicePanel v-if="provider.services.length" :services="provider.services" :theme="theme" />
     <LocationPanel v-if="provider.places.length" :places="provider.places" :theme="theme" />
   </div>

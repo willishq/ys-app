@@ -5,6 +5,7 @@ import ArticleItem from '~/Components/Profile/ArticleItem.vue'
 
 interface Props {
   articles: Article[];
+  provider: Provider,
   theme: ColourTheme;
 }
 
@@ -18,6 +19,7 @@ defineProps<Props>()
         v-for="article in articles"
         :key="article.id"
         :article="article"
+        :provider="provider"
         :theme="theme"
       />
     </div>

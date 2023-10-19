@@ -36,3 +36,9 @@ export const getPostCategoriesRelatedPosts = async (post: string) => (
     await $apiGet<{data: Post}>(`posts/${post}/related`)
   ).data)
 ).data
+
+export const getCategoryLatestPosts = async (category: Category) => (
+  await useAsyncData<Post>(getKey('category.posts.related', [category.id]), async () => (
+    await $apiGet<{data: Post}>(`categories/${category.id}/latest-posts`)
+  ).data)
+).data

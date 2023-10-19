@@ -1,3 +1,4 @@
+import '@vue/runtime-core'
 import {LngLatLike} from "mapbox-gl";
 
 interface Category {
@@ -98,11 +99,5 @@ interface Post {
     image?: string;
     categories: string[];
     provider: Provider;
-
 }
 
-enum PostType {
-    Article = 'articles',
-    Feature = 'features',
-    Guide = 'guides',
-}

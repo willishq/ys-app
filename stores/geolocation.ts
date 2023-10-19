@@ -13,15 +13,10 @@ export const useGeolocationStore: StoreDefinition<
   const localities = shallowRef<Locality[]>([])
   const currentLocalityCookie = useCookie('locality')
 
-  const find = (slug: string): Locality | null => {
-    return localities.value.find(locality => locality.slug === slug) ?? null
-  }
+  const find = (slug: string): Locality | null => localities.value.find(locality => locality.slug === slug) ?? null
 
   const current = shallowRef<Locality | null>(null)
-  const sorter = (a: Locality, b: Locality): number => {
-    if (a.name === b.name) { return 0 }
-    return a.name < b.name ? -1 : 1
-  }
+  const sorter = (a: Locality, b: Locality): number => (a.name === b.name) ? 0 : (a.name < b.name ? -1 : 1)
 
   const primary = computed(() => localities.value.filter(locality => locality.population > 100000).sort(sorter) ?? null)
   const fetch = async (): Promise<Locality[]> => {

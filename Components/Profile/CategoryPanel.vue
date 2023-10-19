@@ -14,7 +14,13 @@ const categories: ComputedRef<PrimaryCategory[] | undefined> = computed(() => us
 </script>
 
 <template>
-  <section class="flex justify-center gap-3 flex-wrap">
-    <CategoryItem v-for="category in categories" :key="category.id" :category="category" :default-open="defaultOpen || false" />
-  </section>
+  <div>
+    <CategoryItem v-for="category in categories" :key="category.id" :category="category" :default-open="defaultOpen || false">
+      <template #default="{category: c}">
+        <slot
+          :category="c"
+        />
+      </template>
+    </CategoryItem>
+  </div>
 </template>

@@ -174,6 +174,7 @@ export const categories = (slug):ColourTheme => {
     button: `bg-white ${colours.text} ${colours.hoverBg} border ${colours.border} hover:text-white hover:text-underline select-none cursor-pointer`,
     buttonReverse: `text-white ${colours.bgDark} ${colours.hoverText} border ${colours.border} hover:bg-white hover:text-underline select-none cursor-pointer`,
     hoverBg: colours.hoverBg,
+    hoverBgDark: `hover:text-white ${colours.hoverBg}`,
     hoverText: colours.hoverText,
     hoverLightBg: colours.hoverLightBg
   }

@@ -4,10 +4,27 @@ import { getPostCategoriesRelatedPosts, getProviderPost, getProviderRelatedPosts
 import CategoryPanel from '~/Components/Profile/CategoryPanel.vue'
 import ReleatedPost from '~/Components/Post/ReleatedPost.vue'
 
-const { slug, provider }: {slug: string, provider: string} = useRoute().params
+interface Params {
+  slug: string,
+  provider: string,
+  type: string
+}
+
+enum PostType {
+  Article = 'articles',
+  Feature = 'features',
+  Guide = 'guides',
+}
+
+const { slug, provider, type: postType }: Params = useRoute().params
+
+if (!(postType in PostType)) {
+  createError({ statusCode: 404 })
+}
+
 const post = await getProviderPost(provider, slug)
 if (!post.value) {
-  useRouter().push('/404')
+  createError({ statusCode: 404 })
 }
 
 const providerRelatedPosts = await getProviderRelatedPosts(post.value.provider.id, post.value.id)
@@ -51,29 +68,42 @@ const categoryRelatedPosts = await getPostCategoriesRelatedPosts(post.value.id)
           <h3 class="leading-6 mb-3 text-neutral-400">
             More from {{ post.provider.title }}
           </h3>
-          <hr class="h-px -mx-4 bg-neutral-300 border-0">
-          <ReleatedPost
-            v-for="providerPost in providerRelatedPosts"
-            :key="providerPost.id"
-            :post="providerPost"
-          />
+
+          <div class="-mx-4 -mb-4">
+            <hr class="h-px bg-neutral-300 border-0">
+            <ReleatedPost
+              v-for="providerPost in providerRelatedPosts"
+              :key="providerPost.id"
+              :post="providerPost"
+              :provider="post.provider"
+            />
+          </div>
         </div>
       </div>
 
-      <div class="bg-white border rounded-md shadow-md border-neutral-200 p-4 flex flex-col gap-3">
-        <CategoryPanel :category-ids="post.categories" />
-        <hr class="h-px -mx-4 bg-neutral-300 border-0">
-        <div v-if="categoryRelatedPosts?.length > 0">
-          <h3 class="leading-6 mb-3 text-neutral-400">
-            Related content
-          </h3>
-          <hr class="h-px -mx-4 bg-neutral-300 border-0">
-          <ReleatedPost
-            v-for="categoryPost in categoryRelatedPosts"
-            :key="categoryPost.id"
-            :post="categoryPost"
-          />
-        </div>
+      <div class="bg-white border rounded-md shadow-md border-neutral-200 flex flex-col gap-3">
+        <CategoryPanel
+          :category-ids="post.categories"
+          class="p-4"
+        >
+          <template #default="{category}">
+            <div class="-mx-4 -mb-4">
+              <hr class="h-px my-3 bg-neutral-300 border-0">
+              <div v-if="categoryRelatedPosts?.length > 0" class="">
+                <h3 class="leading-6 mx-4 mb-3 text-neutral-400">
+                  Related content
+                </h3>
+                <hr class="h-px bg-neutral-300 border-0">
+                <ReleatedPost
+                  v-for="categoryPost in categoryRelatedPosts"
+                  :key="categoryPost.id"
+                  :post="categoryPost"
+                  :theme="category.colour"
+                />
+              </div>
+            </div>
+          </template>
+        </CategoryPanel>
       </div>
     </div>
   </div>

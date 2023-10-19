@@ -19,7 +19,10 @@
               </NuxtLink>
             </div>
             <div class="md:text-auto text-right">
-              <NuxtLink class="font-semibold text-neutral-600 hover:text-neutral-800 hover:underline">
+              <NuxtLink
+                class="font-semibold text-neutral-600 hover:text-neutral-800 hover:underline"
+                :to="{ name: 'providers' }"
+              >
                 Run a service?
               </NuxtLink>
             </div>
