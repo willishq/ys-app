@@ -1,14 +1,14 @@
 <script setup lang="ts">
 
-import { getOrganisation } from '~/utils/asyncApi'
+import { getProvider } from '~/utils/asyncApi'
 
 const route = useRoute()
 
-const organisation = await getOrganisation(route.params.slug)
+const provider = await getProvider(route.params.slug)
 </script>
 
 <template>
   <div>
-    {{ organisation.title }}
+    {{ provider.title }}
   </div>
 </template>

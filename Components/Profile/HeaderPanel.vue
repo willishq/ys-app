@@ -5,10 +5,10 @@ import { socialLink } from '~/utils/profileHelpers'
 
 interface Props {
     theme: ColourTheme;
-    organisation: Provider;
+    provider: Provider;
 }
 
-const { organisation, theme } = defineProps<Props>()
+const { provider, theme } = defineProps<Props>()
 
 const nonSocialKeys = ['website', 'phone', 'email']
 
@@ -21,9 +21,9 @@ const linkHref = (link, type) => {
   return options[type] || (socialLink(type) && `${socialLink(type).prefix}${link}`)
 }
 
-const socialLinks = computed(() => organisation.links?.filter(({ type }) => !nonSocialKeys.includes(type)))
+const socialLinks = computed(() => provider.links?.filter(({ type }) => !nonSocialKeys.includes(type)))
 
-const otherLinks = computed(() => organisation.links?.filter(({ type }) => nonSocialKeys.includes(type)))
+const otherLinks = computed(() => provider.links?.filter(({ type }) => nonSocialKeys.includes(type)))
 
 const isCopying = ref(false)
 
@@ -37,8 +37,8 @@ const copy = (event, text, key) => {
 }
 
 const backgroundStyle = computed(() => {
-  if (organisation.cover) {
-    return `background-image: url(${organisation.cover})`
+  if (provider.cover) {
+    return `background-image: url(${provider.cover})`
   }
   return ''
 })
@@ -54,18 +54,18 @@ const checkIsCopying = (text, key) => isCopying.value === key ? 'Copied!' : text
   <PagePanel :theme="theme" class="bg-white rounded">
     <div
       class="flex w-full flex-col justify-end bg-cover"
-      :class="organisation.cover && 'aspect-[3/1]'"
+      :class="provider.cover && 'aspect-[3/1]'"
       :style="backgroundStyle"
     >
       <div
         class="mx-auto flex flex w-full items-center gap-12 rounded bg-gradient-to-b from-white/10 to-white/60 p-6 shadow backdrop-blur-sm"
-        :class="organisation.cover && '-mb-56 sm:-mb-32'"
+        :class="provider.cover && '-mb-56 sm:-mb-32'"
       >
-        <div v-if="organisation.avatar" class="w-64 grow-0">
+        <div v-if="provider.avatar" class="w-64 grow-0">
           <img
             class="aspect-square rounded-full border-4 border-white object-cover shadow-lg"
-            :src="organisation.avatar"
-            alt="organisation logo"
+            :src="provider.avatar"
+            alt="provider logo"
           >
         </div>
         <div class="grow-1 flex w-full flex-col justify-center gap-3">
@@ -93,7 +93,7 @@ const checkIsCopying = (text, key) => isCopying.value === key ? 'Copied!' : text
             </a>
           </div>
           <h1 class="text-shadow pb-4 text-5xl text-neutral-800">
-            {{ organisation.title }}
+            {{ provider.title }}
           </h1>
           <div class="flex gap-3">
             <a
@@ -126,7 +126,7 @@ const checkIsCopying = (text, key) => isCopying.value === key ? 'Copied!' : text
   >
     <div class="grow-1 flex w-full flex-col justify-center gap-3 bg-white">
       <p class="text-shadow text-lg">
-        {{ organisation.description }}
+        {{ provider.description }}
       </p>
     </div>
   </PagePanel>

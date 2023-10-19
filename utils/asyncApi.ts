@@ -11,7 +11,7 @@ export const getDirectoryPanel = async (page: string, category: string, { filter
   )
 ).data
 
-export const getOrganisation = async (slug: string) => (
+export const getProvider = async (slug: string) => (
   await useAsyncData<Provider>(
     getKey('provider', [slug]),
     async () => (

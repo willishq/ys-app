@@ -56,7 +56,7 @@ interface SocialLink {
         path: Array<string>;
     }
 }
-interface OrganisationLink {
+interface ProviderLink {
     type: SocialLinkType;
     url: string;
     value: string;
@@ -66,7 +66,7 @@ interface Provider {
     description: string;
     slug: string;
     avatar: string;
-    links: Array<OrganisationLink>
+    links: Array<ProviderLink>
     cover: string;
     categories: Array<string>;
     places: Array<Place>;

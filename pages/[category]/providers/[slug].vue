@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Ref } from 'vue'
-import { getOrganisation } from '~/utils/asyncApi'
+import { getProvider } from '~/utils/asyncApi'
 import { categories as categoryThemes } from '~/colours/categories'
 import CategoryPanel from '~/Components/Profile/CategoryPanel.vue'
 import LocationPanel from '~/Components/Profile/LocationPanel.vue'
@@ -10,18 +10,18 @@ import ArticlePanel from '~/Components/Profile/ArticlePanel.vue'
 
 const route = useRoute()
 
-const organisation: Ref<Provider | null> = await getOrganisation(route.params.slug as string)
+const provider: Ref<Provider | null> = await getProvider(route.params.slug as string)
 
 const theme = categoryThemes('default')
 
 </script>
 
 <template>
-  <div v-if="organisation" class="flex w-full flex-col justify-end bg-cover gap-12">
-    <HeaderPanel :organisation="organisation" :theme="theme" />
-    <CategoryPanel :category-ids="organisation.categories" />
-    <ArticlePanel v-if="organisation.articles.length" :articles="organisation.articles" :theme="theme" />
-    <ServicePanel v-if="organisation.services.length" :services="organisation.services" :theme="theme" />
-    <LocationPanel v-if="organisation.places.length" :places="organisation.places" :theme="theme" />
+  <div v-if="provider" class="flex w-full flex-col justify-end bg-cover gap-12">
+    <HeaderPanel :provider="provider" :theme="theme" />
+    <CategoryPanel :category-ids="provider.categories" />
+    <ArticlePanel v-if="provider.articles.length" :articles="provider.articles" :theme="theme" />
+    <ServicePanel v-if="provider.services.length" :services="provider.services" :theme="theme" />
+    <LocationPanel v-if="provider.places.length" :places="provider.places" :theme="theme" />
   </div>
 </template>
